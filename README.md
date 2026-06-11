@@ -2,6 +2,8 @@
 
 [![Download APK](https://img.shields.io/github/v/release/nguyenkhang-gif/allgif-android?label=Download%20APK&logo=android&color=3DDC84)](https://github.com/nguyenkhang-gif/allgif-android/releases/latest/download/AllGif.apk)
 
+App images (logo, background) by [@M_terU116](https://x.com/M_terU116).
+
 AllGif lets you browse images from any folder on your Android device, copy them to the clipboard with a single tap, and edit them in a built-in studio — crop freely and remove backgrounds on-device with ML Kit.
 
 Available as a native Android app (Capacitor) with a floating bubble for quick access from any app.
@@ -250,6 +252,12 @@ allgif-android/
 | `node_modules/`, `dist/`, `apk/` | ❌ | Generated at build time |
 | `android/.gradle/`, `android/app/build/` | ❌ | Gradle build cache |
 | `android/app/src/main/assets/public/` | ❌ | Synced by `cap sync` |
+
+---
+
+## Credits
+
+App images (logo, background) by [@M_terU116](https://x.com/M_terU116).
 
 ---
 
