@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>AllGif</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+
+    <!-- ── Header ── -->
+    <header id="header">
+      <span id="header-title">AllGif</span>
+      <div id="selection-bar" class="hidden">
+        <span id="sel-count">0 selected</span>
+        <div id="sel-actions">
+          <button id="btn-cancel-sel">Cancel</button>
+          <button id="btn-delete-sel">Delete</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── Pages ── -->
+    <div id="page-gallery" class="page active">
+      <div id="grid"></div>
+      <div id="empty-state">
+        <div class="empty-icon">📂</div>
+        <p id="empty-msg">Go to Config to pick a folder</p>
+      </div>
+      <button id="btn-add-img" class="hidden" title="Add images">+</button>
+    </div>
+
+    <div id="page-studio" class="page">
+      <div id="studio-placeholder">
+        <div class="empty-icon">✏️</div>
+        <p id="studio-msg">Tap an image in Gallery to select it</p>
+      </div>
+    </div>
+
+    <div id="page-config" class="page">
+      <div class="config-section">
+        <div class="config-label">Source folder</div>
+        <div id="cfg-folder-path" class="config-value muted">None selected</div>
+        <button id="btn-change-folder" class="config-btn primary">
+          📁 Change folder
+        </button>
+      </div>
+
+      <div class="config-section">
+        <div class="config-label">Images</div>
+        <div id="cfg-image-count" class="config-value">—</div>
+      </div>
+
+      <div class="config-section">
+        <div class="config-label">Bubble icon</div>
+        <div id="bubble-icon-preview-wrap">
+          <img id="bubble-icon-preview" src="" alt="" />
+        </div>
+        <button id="btn-change-bubble-icon" class="config-btn primary">
+          🫧 Change bubble icon
+        </button>
+      </div>
+
+      <div class="config-section">
+        <div class="config-label">Copy crop size</div>
+        <div class="config-crop-row">
+          <input id="cfg-crop-w" type="number" min="0" placeholder="Width px" />
+          <span class="config-crop-sep">×</span>
+          <input id="cfg-crop-h" type="number" min="0" placeholder="Height px" />
+        </div>
+        <div class="config-hint">Pixels to remove from each side. Leave blank to copy full image.</div>
+      </div>
+
+      <div class="config-section">
+        <div class="config-label">Tap an image in Gallery to copy it to clipboard</div>
+      </div>
+    </div>
+
+    <!-- ── Bottom tab bar ── -->
+    <nav id="tab-bar">
+      <button class="tab active" data-page="gallery">
+        <span class="tab-icon">🖼</span>
+        <span class="tab-label">Gallery</span>
+      </button>
+      <button class="tab" id="tab-studio" data-page="studio">
+        <span class="tab-icon">✏️</span>
+        <span class="tab-label">Edit</span>
+      </button>
+      <button class="tab" data-page="config">
+        <span class="tab-icon">⚙️</span>
+        <span class="tab-label">Config</span>
+      </button>
+    </nav>
+
+    <div id="toast"></div>
+
+    <!-- ── Image Editor ── -->
+    <div id="editor-modal" class="hidden">
+      <div id="editor-header">
+        <button id="btn-editor-cancel">Cancel</button>
+        <span id="editor-filename"></span>
+        <button id="btn-editor-save">Save</button>
+      </div>
+      <div id="editor-canvas-wrap">
+        <canvas id="editor-canvas"></canvas>
+        <div class="crop-handle" id="crop-tl"></div>
+        <div class="crop-handle" id="crop-tr"></div>
+        <div class="crop-handle" id="crop-bl"></div>
+        <div class="crop-handle" id="crop-br"></div>
+        <div id="crop-mover"></div>
+      </div>
+      <div id="zoom-row">
+        <span id="zoom-label">100%</span>
+        <input type="range" id="zoom-slider" min="10" max="100" value="100" step="5" />
+      </div>
+      <div id="editor-actions">
+        <button id="btn-remove-bg">✨ Remove BG</button>
+        <button id="btn-editor-copy">Copy</button>
+      </div>
+      <div id="editor-loading" class="hidden">
+        <div class="editor-spinner"></div>
+        <span></span>
+      </div>
+      <div id="editor-toast"></div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

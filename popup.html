@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AllGif Popup</title>
+    <link rel="stylesheet" href="/src/popup.css" />
+  </head>
+  <body>
+    <div id="popup-card">
+
+      <div id="header">
+        <div id="header-left">
+          <img id="app-icon" src="/public/appImg.jpeg" alt="" />
+          <span id="app-title">AllGif</span>
+        </div>
+        <div id="header-actions">
+          <button class="icon-btn" onclick="window.Android&&Android.closePopup()">—</button>
+          <button class="icon-btn close" onclick="window.Android&&Android.removeBubble()">✕</button>
+        </div>
+      </div>
+
+      <div id="grid-wrap">
+        <div id="grid"></div>
+        <div id="empty">
+          <p id="empty-msg">No folder selected</p>
+          <button id="btn-open-app" onclick="window.Android&&Android.openApp()">Open AllGif →</button>
+        </div>
+      </div>
+
+      <div id="toast"></div>
+
+    </div>
+    <script>
+      var grid     = document.getElementById('grid');
+      var empty    = document.getElementById('empty');
+      var emptyMsg = document.getElementById('empty-msg');
+      var toast    = document.getElementById('toast');
+      var toastTimer;
+      var observer;
+
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function(){ toast.classList.remove('show'); }, 1800);
+      }
+
+      function reload() {
+        if (observer) { observer.disconnect(); observer = null; }
+        init();
+      }
+
+      function init() {
+        if (!window.Android) {
+          emptyMsg.textContent = 'No bridge';
+          empty.classList.add('show');
+          return;
+        }
+        var folder = Android.getFolder();
+        if (!folder) {
+          emptyMsg.textContent = 'Open AllGif and pick a folder first';
+          empty.classList.add('show');
+          grid.innerHTML = '';
+          return;
+        }
+        var images;
+        try { images = JSON.parse(Android.listImages(folder)); } catch(e) { images = []; }
+        if (!images.length) {
+          emptyMsg.textContent = 'No images in selected folder';
+          empty.classList.add('show');
+          grid.innerHTML = '';
+          return;
+        }
+        empty.classList.remove('show');
+        grid.innerHTML = '';
+
+        observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(e) {
+            if (!e.isIntersecting) return;
+            var img = e.target;
+            var path = img.dataset.src;
+            if (!path) return;
+            var thumb = Android.getThumbnail(path);
+            img.src = thumb || ('file://' + path);
+            delete img.dataset.src;
+            observer.unobserve(img);
+          });
+        }, { rootMargin: '200px' });
+
+        images.forEach(function(file) {
+          var cell = document.createElement('div');
+          cell.className = 'cell';
+          var img = document.createElement('img');
+          img.dataset.src = file.path;
+          img.alt = file.name;
+          img.decoding = 'async';
+          img.onerror = function(){ cell.style.display = 'none'; };
+          cell.appendChild(img);
+          observer.observe(img);
+          cell.addEventListener('click', function() {
+            var result = Android.copyImage(file.path);
+            cell.classList.add('flash');
+            setTimeout(function(){ cell.classList.remove('flash'); }, 350);
+            showToast(result === 'ok' ? 'Copied!' : 'Failed');
+          });
+          grid.appendChild(cell);
+        });
+      }
+
+      init();
+    </script>
+  </body>
+</html>

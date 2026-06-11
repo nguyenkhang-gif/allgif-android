@@ -1,0 +1,167 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#popup-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #1a1a2e;
+  border-radius: 18px;
+  border: 1px solid rgba(108, 99, 255, 0.3);
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+
+/* ── Header ── */
+#header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: #22223a;
+  border-bottom: 1px solid rgba(108,99,255,0.18);
+  flex-shrink: 0;
+}
+
+#header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#app-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid rgba(255,255,255,0.2);
+}
+
+#app-title {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+#header-actions { display: flex; gap: 4px; }
+
+.icon-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 7px;
+  background: rgba(255,255,255,0.08);
+  color: #aaa;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-btn:active { background: rgba(255,255,255,0.18); }
+.icon-btn.close  { color: #ff6b6b; }
+
+/* ── Grid ── */
+#grid-wrap {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+
+#grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  padding: 2px;
+}
+
+.cell {
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: #22223a;
+  position: relative;
+  cursor: pointer;
+}
+
+.cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.1s;
+}
+
+.cell::after {
+  content: '📋';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  background: rgba(108,99,255,0.8);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.cell.flash::after { opacity: 1; }
+.cell.flash img    { transform: scale(0.88); }
+
+/* ── Empty ── */
+#empty {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 30px 20px;
+  text-align: center;
+}
+#empty.show { display: flex; }
+
+#empty-msg {
+  font-size: 13px;
+  color: #555570;
+}
+
+#btn-open-app {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  background: #6c63ff;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+#btn-open-app:active { background: #5a52dd; }
+
+/* ── Toast ── */
+#toast {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: #6c63ff;
+  color: #fff;
+  padding: 7px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s, transform 0.18s;
+  z-index: 10;
+}
+#toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
